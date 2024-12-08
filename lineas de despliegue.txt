@@ -1,0 +1,4 @@
+Localmente se despliega con:
+
+docker-compose build
+docker-compose up

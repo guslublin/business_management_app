@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  frontend:
+    build:
+      context: ./business_management_ui
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./business_management_ui:/app
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+
+  backend:
+    build:
+      context: ./business_management_api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./business_management_api:/app
+    environment:
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      - db
+
+  db:
+    image: postgres:13
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: businessManagementdb
+      POSTGRES_USER: businessManagementUser
+      POSTGRES_PASSWORD: businessManagementPass
+    ports:
+      - "5432:5432"
+
+volumes:
+  postgres_data:
