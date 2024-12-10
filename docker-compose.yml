@@ -8,6 +8,7 @@ services:
       - "3000:3000"
     volumes:
       - ./business_management_ui:/app
+      - /app/node_modules 
     environment:
       - CHOKIDAR_USEPOLLING=true
 
