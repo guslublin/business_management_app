@@ -81,6 +81,7 @@ WSGI_APPLICATION = 'business_management_api.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# Por defecto
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
@@ -88,13 +89,26 @@ WSGI_APPLICATION = 'business_management_api.wsgi.application'
 #     }
 # }
 
+# Desarrollo local
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'businessManagementdb',  # Nombre de la base de datos
+#         'USER': 'businessManagementUser',  # Usuario de la base de datos
+#         'PASSWORD': 'businessManagementPass',  # Contraseña de la base de datos
+#         'HOST': '127.0.0.1',  # Dirección local (localhost)
+#         'PORT': '5432',  # Puerto predeterminado de PostgreSQL
+#     }
+# }
+
+# Producción
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'businessManagementdb',  # Nombre de la base de datos
         'USER': 'businessManagementUser',  # Usuario de la base de datos
         'PASSWORD': 'businessManagementPass',  # Contraseña de la base de datos
-        'HOST': '127.0.0.1',  # Dirección local (localhost)
+        'HOST': 'db',  # Dirección local (localhost)
         'PORT': '5432',  # Puerto predeterminado de PostgreSQL
     }
 }

@@ -1,5 +1,5 @@
-# Usar una imagen base de Python 3
-FROM python:3.9
+# Usar una imagen base de Python >=3.10
+FROM python:3.11
 
 # Establecer el directorio de trabajo en la imagen
 WORKDIR /app
@@ -8,7 +8,7 @@ WORKDIR /app
 COPY requirements.txt .
 
 # Instalar las dependencias
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir -r requirements.txt
 
 # Copiar todo el código al contenedor
 COPY . .
