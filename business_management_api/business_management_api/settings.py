@@ -90,28 +90,28 @@ WSGI_APPLICATION = 'business_management_api.wsgi.application'
 # }
 
 # Desarrollo local
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'businessManagementdb',  # Nombre de la base de datos
-#         'USER': 'businessManagementUser',  # Usuario de la base de datos
-#         'PASSWORD': 'businessManagementPass',  # Contraseña de la base de datos
-#         'HOST': '127.0.0.1',  # Dirección local (localhost)
-#         'PORT': '5432',  # Puerto predeterminado de PostgreSQL
-#     }
-# }
-
-# Producción
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'businessManagementdb',  # Nombre de la base de datos
         'USER': 'businessManagementUser',  # Usuario de la base de datos
         'PASSWORD': 'businessManagementPass',  # Contraseña de la base de datos
-        'HOST': 'db',  # Dirección local (localhost)
+        'HOST': '127.0.0.1',  # Dirección local (localhost)
         'PORT': '5432',  # Puerto predeterminado de PostgreSQL
     }
 }
+
+# Producción
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'businessManagementdb',  # Nombre de la base de datos
+#         'USER': 'businessManagementUser',  # Usuario de la base de datos
+#         'PASSWORD': 'businessManagementPass',  # Contraseña de la base de datos
+#         'HOST': 'db',  # Dirección local (localhost)
+#         'PORT': '5432',  # Puerto predeterminado de PostgreSQL
+#     }
+# }
 
 
 # Password validation
