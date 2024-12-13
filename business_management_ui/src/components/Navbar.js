@@ -7,15 +7,21 @@ import { LogoutOutlined } from "@ant-design/icons";
 const { Header } = Layout;
 
 const Navbar = () => {
-  const { logout } = useContext(AuthContext);
+  const { logout, user } = useContext(AuthContext); // Accede al usuario y logout desde el contexto
   const location = useLocation();
 
-  // Menú de navegación
+  // Menú base (opción "Home")
   const items = [
     { key: "/", label: <Link to="/">Home</Link> },
-    { key: "/usuarios", label: <Link to="/usuarios">Usuarios</Link> },
-    { key: "/configuraciones", label: <Link to="/configuraciones">Configuraciones</Link> },
   ];
+
+  // Agregar opciones para admin
+  if (user?.rol === "admin") {
+    items.push(
+      { key: "/usuarios", label: <Link to="/usuarios">Usuarios</Link> },
+      { key: "/configuraciones", label: <Link to="/configuraciones">Configuraciones</Link> }
+    );
+  }
 
   return (
     <Header style={{ display: "flex", alignItems: "center", padding: "0 20px" }}>
@@ -25,7 +31,7 @@ const Navbar = () => {
         mode="horizontal"
         selectedKeys={[location.pathname]}
         items={items}
-        style={{ flex: 1, minWidth: 0 }} // Asegura el ajuste responsive
+        style={{ flex: 1, minWidth: 0 }} // Ajuste responsive
       />
       {/* Botón de logout con ícono */}
       <Button

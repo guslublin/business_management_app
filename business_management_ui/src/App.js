@@ -27,19 +27,45 @@ function AppContent() {
       <Layout>
         <Content style={{ padding: "20px" }}>
           <Routes>
+            {/* Ruta Login */}
             <Route path="/login" element={<Login />} />
+
+            {/* Ruta Home - Accesible para cualquier usuario autenticado */}
             <Route
               path="/"
               element={user ? <Home /> : <Navigate to="/login" replace />}
             />
+
+            {/* Ruta Usuarios - Solo admin */}
             <Route
               path="/usuarios"
-              element={user ? <Usuarios /> : <Navigate to="/login" replace />}
+              element={
+                user?.rol === "admin" ? (
+                  <Usuarios />
+                ) : user ? (
+                  <Navigate to="/" replace />
+                ) : (
+                  <Navigate to="/login" replace />
+                )
+              }
             />
+
+            {/* Ruta Configuraciones - Solo admin */}
             <Route
               path="/configuraciones"
-              element={user ? <Configuraciones /> : <Navigate to="/login" replace />}
+              element={
+                user?.rol === "admin" ? (
+                  <Configuraciones />
+                ) : user ? (
+                  <Navigate to="/" replace />
+                ) : (
+                  <Navigate to="/login" replace />
+                )
+              }
             />
+
+            {/* Ruta por defecto si no coincide */}
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Content>
       </Layout>
