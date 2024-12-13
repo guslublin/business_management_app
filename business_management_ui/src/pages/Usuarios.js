@@ -94,6 +94,16 @@ const Usuarios = () => {
     { title: "Email", dataIndex: "email", key: "email" },
     { title: "Rol", dataIndex: "rol", key: "rol" },
     {
+      title: "Estado",
+      dataIndex: "is_active",
+      key: "is_active",
+      render: (isActive) => (
+        <span style={{ color: isActive ? "green" : "red" }}>
+          {isActive ? "Activo" : "Inactivo"}
+        </span>
+      ),
+    },
+    {
       title: "Acciones",
       key: "acciones",
       render: (_, record) => (
@@ -109,6 +119,7 @@ const Usuarios = () => {
       ),
     },
   ];
+  
 
   return (
     <div>

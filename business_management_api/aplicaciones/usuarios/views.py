@@ -1,10 +1,12 @@
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
-from .models import Usuario
-from .serializers import UsuarioSerializer, UsuarioCreateSerializer
+from .models import Usuario, ConfiguracionNegocio
+from .serializers import UsuarioSerializer, UsuarioCreateSerializer, ConfiguracionNegocioSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
+from rest_framework.generics import RetrieveUpdateAPIView
+from .permissions import IsAdminRol
 
 # Login con JWT
 class LoginView(TokenObtainPairView):
@@ -14,7 +16,7 @@ class LoginView(TokenObtainPairView):
 class UsuarioCreateView(generics.CreateAPIView):
     queryset = Usuario.objects.all()
     serializer_class = UsuarioCreateSerializer
-    permission_classes = [permissions.IsAuthenticated, permissions.IsAdminUser]
+    permission_classes = [permissions.IsAuthenticated, IsAdminRol]
 
 # Listar Usuarios (solo admin y supervisores)
 class UsuarioListView(generics.ListAPIView):
@@ -82,3 +84,48 @@ class UsuarioUpdateView(APIView):
         user.save()
 
         return Response({"message": "Usuario actualizado correctamente."})
+    
+class ConfiguracionNegocioView(RetrieveUpdateAPIView):
+    queryset = ConfiguracionNegocio.objects.all()
+    serializer_class = ConfiguracionNegocioSerializer
+    permission_classes = [IsAuthenticated, IsAdminUser]
+
+    def get_object(self):
+        # Solo un registro, por lo tanto, devuelve el primer objeto o lo crea si no existe
+        obj, created = ConfiguracionNegocio.objects.get_or_create()
+        return obj
+    
+class ConfiguracionView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        config = ConfiguracionNegocio.objects.first()
+        if config:
+            serializer = ConfiguracionNegocioSerializer(config)
+            return Response(serializer.data)
+        return Response({"error": "Configuración no encontrada."}, status=status.HTTP_404_NOT_FOUND)
+    
+    def patch(self, request):
+        # Actualizar la configuración
+        config, created = ConfiguracionNegocio.objects.get_or_create()
+        serializer = ConfiguracionNegocioSerializer(config, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class ConfiguracionPublicaView(APIView):
+    """
+    Endpoint público para obtener la configuración del negocio (nombre y logo).
+    """
+    permission_classes = [AllowAny]  # Permite acceso sin autenticación
+
+    def get(self, request):
+        config = ConfiguracionNegocio.objects.first()
+        if config:
+            serializer = ConfiguracionNegocioSerializer(config)
+            return Response({
+                "nombre_negocio": serializer.data["nombre_negocio"],
+                "logo": serializer.data["logo"]
+            })
+        return Response({"error": "Configuración no encontrada."}, status=status.HTTP_404_NOT_FOUND)

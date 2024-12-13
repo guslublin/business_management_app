@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Usuario  # Solo importa el modelo
+from .models import Usuario, ConfiguracionNegocio
 
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
@@ -22,3 +22,8 @@ class UsuarioCreateSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
         return user
+    
+class ConfiguracionNegocioSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ConfiguracionNegocio
+        fields = ['nombre_negocio', 'logo']

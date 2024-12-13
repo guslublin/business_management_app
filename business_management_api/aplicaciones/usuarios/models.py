@@ -27,3 +27,11 @@ class Usuario(AbstractUser):
 
     def __str__(self):
         return f"{self.username} - {self.get_rol_display()}"
+
+
+class ConfiguracionNegocio(models.Model):
+    nombre_negocio = models.CharField(max_length=255, default="Mi Negocio")
+    logo = models.ImageField(upload_to="logos/", null=True, blank=True)
+
+    def __str__(self):
+        return self.nombre_negocio
